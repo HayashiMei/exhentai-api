@@ -8,55 +8,55 @@ const category = {
   NON_H: 'non-h',
   DOUJINSHI: 'doujinshi',
   MANGA: 'manga',
-  COSPLAY: 'cosplay'
+  COSPLAY: 'cosplay',
 };
 
-const searchByCategory = (key, page, c) => {
+const searchByCategory = (keyword, page, ct) => {
   const params = {
-    f_search: key,
+    f_search: keyword,
     page,
-    f_apply: 'Apply Filter'
+    f_apply: 'Apply Filter',
   };
 
-  return http.get(c, { params }).then(res => {
+  return http.get(ct, { params }).then(res => {
     const { currentPage, galleryCount, pageCount, galleries } = parseSearchPage(res.data);
     return {
-      key,
+      keyword,
+      pageCount,
       currentPage,
       galleryCount,
-      pageCount,
-      galleries
+      galleries,
     };
   });
 };
 
-const search = (key, page) => searchByCategory(key, page, '/');
+const search = (keyword, page) => searchByCategory(keyword, page, '/');
 
-const nonh = (key, page) => searchByCategory(key, page, category.NON_H);
+const nonh = (keyword, page) => searchByCategory(keyword, page, category.NON_H);
 
-const doujinshi = (key, page) => searchByCategory(key, page, category.DOUJINSHI);
+const doujinshi = (keyword, page) => searchByCategory(keyword, page, category.DOUJINSHI);
 
-const manga = (key, page) => searchByCategory(key, page, category.MANGA);
+const manga = (keyword, page) => searchByCategory(keyword, page, category.MANGA);
 
-const cosplay = (key, page) => searchByCategory(key, page, category.COSPLAY);
+const cosplay = (keyword, page) => searchByCategory(keyword, page, category.COSPLAY);
 
 const tagType = {
-  ARTIST: 'artist'
+  ARTIST: 'artist',
 };
 
 const searchByTag = (tag, page) => {
   const params = {
-    page
+    page,
   };
 
   return http.get(`tag/${tag}`, { params }).then(res => {
-    const { currentPage, galleryCount, pageCount, galleries } = parseSearchPage(res.data);
+    const { pageCount, currentPage, galleryCount, galleries } = parseSearchPage(res.data);
     return {
-      tag,
+      tag: unescape(tag),
+      pageCount,
       currentPage,
       galleryCount,
-      pageCount,
-      galleries
+      galleries,
     };
   });
 };
@@ -68,15 +68,15 @@ const tagMisc = (tag, page) => searchByTag(escape(tag), page);
 const parseSearchPage = html => {
   const $ = cheerio.load(html);
 
-  const { currentPage, galleryCount, pageCount } = parsePageCount($);
+  const { pageCount, currentPage, galleryCount } = parsePageCount($);
 
   const galleries = parseGalleries($);
 
   return {
+    pageCount,
     currentPage,
     galleryCount,
-    pageCount,
-    galleries
+    galleries,
   };
 };
 
@@ -86,59 +86,49 @@ const parsePageCount = $ => {
   const pageCount = Math.ceil(galleryCount / galleryCountPerPage);
 
   return {
+    pageCount,
     currentPage,
     galleryCount,
-    pageCount
   };
 };
 
-const parseGalleries = $ =>
-  $('.itdc')
-    .map((i, el) => {
-      const type = $(el)
-        .find('a')
-        .attr('href');
+const parseGalleries = $ => $('.itdc').map((i, el) => {
+  const type = $(el).find('img').attr('alt');
+  const timeNode = $(el).next();
+  const postTime = timeNode.text();
 
-      const timeNode = $(el).next();
-      const postTime = timeNode.text();
+  const detialNode = timeNode.next();
+  const coverNode = detialNode.find('.it2').find('img');
+  let title = '';
+  let cover = '';
 
-      const detialNode = timeNode.next();
-      const coverNode = detialNode.find('.it2').find('img');
-      let title = '',
-        cover = '';
+  if (coverNode.length) {
+    title = coverNode.attr('alt');
+    cover = coverNode.attr('src');
+  } else {
+    const parsedDetial = detialNode.find('.it2').text().split('~');
 
-      if (coverNode.length) {
-        title = coverNode.attr('alt');
-        cover = coverNode.attr('src');
-      } else {
-        const parsedDetial = detialNode
-          .find('.it2')
-          .text()
-          .split('~');
+    title = parsedDetial[3];
+    cover = BASE_URL + parsedDetial[2];
+  }
 
-        title = parsedDetial[3];
-        cover = BASE_URL + parsedDetial[2];
-      }
+  const torrentsPage = detialNode.find('.i a').attr('href');
+  const galleryPage = detialNode.find('.it5 a').attr('href');
+  const uploaderNode = detialNode.next();
+  const uploader = uploaderNode.text();
+  const uploaderPage = uploaderNode.find('a').attr('href');
 
-      const torrentsPage = detialNode.find('.i a').attr('href');
-      const galleryPage = detialNode.find('.it5 a').attr('href');
-
-      const uploaderNode = detialNode.next();
-      const uploader = uploaderNode.text();
-      const uploaderPage = uploaderNode.find('a').attr('href');
-
-      return {
-        type,
-        postTime,
-        title,
-        cover,
-        torrentsPage,
-        galleryPage,
-        uploader,
-        uploaderPage
-      };
-    })
-    .get();
+  return {
+    type,
+    postTime,
+    title,
+    cover,
+    torrentsPage,
+    galleryPage,
+    uploader,
+    uploaderPage
+  };
+}).get();
 
 module.exports = {
   search,
@@ -146,10 +136,10 @@ module.exports = {
     nonh,
     doujinshi,
     manga,
-    cosplay
+    cosplay,
   },
   Tag: {
     artist: tagArtist,
-    misc: tagMisc
-  }
+    misc: tagMisc,
+  },
 };
