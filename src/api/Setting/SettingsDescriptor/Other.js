@@ -2,13 +2,13 @@ const Other = {
   blackList: {
     name: 'xu',
     type: 'text',
-    value: ''
+    value: '',
   },
   HentaiAtHome: {
     name: 'hh',
     type: 'text',
-    value: ''
-  }
+    value: '',
+  },
 };
 
 module.exports = Other;

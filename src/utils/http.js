@@ -62,7 +62,7 @@ const download = (url, path) => http.get(url, {
   const ext = getExt(res.headers['content-type']);
   const fileName = ext ? `${path}.${ext}` : path;
 
-  fs.writeFileSync(fileName, new Buffer(res.data, 'binary'));
+  fs.writeFileSync(fileName, Buffer.from(res.data, 'binary'));
 });
 
 const getExt = ext => {

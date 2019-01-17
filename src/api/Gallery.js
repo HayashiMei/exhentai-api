@@ -7,7 +7,7 @@ const imageCountPerPage = 20;
 const open = (url, p) => {
   const params = {
     inline_set: 'ts_l',
-    p
+    p,
   };
 
   return http.get(url, { params }).then(res => {
@@ -40,7 +40,7 @@ const parseGalleryPage = html => {
     tagList,
     currentPage,
     pageCount,
-    imageSet
+    imageSet,
   };
 };
 
@@ -73,7 +73,7 @@ const parseInfo = $ => {
     length,
     favoriteCount,
     ratingCount,
-    ratingAvg
+    ratingAvg,
   };
 };
 
@@ -100,7 +100,7 @@ const parsePageCount = ($, info) => {
   const pageCount = Math.ceil(info.length / imageCountPerPage);
   return {
     currentPage,
-    pageCount
+    pageCount,
   };
 };
 
@@ -118,7 +118,7 @@ const parseImageSet = $ => {
       return {
         src,
         title,
-        thumb
+        thumb,
       };
     })
     .get();
@@ -145,11 +145,11 @@ const parseImage = html => {
     first,
     prev,
     next,
-    last
+    last,
   };
 };
 
 module.exports = {
   open,
-  openImage
+  openImage,
 };

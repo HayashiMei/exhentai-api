@@ -98,5 +98,5 @@ const settings2Data = settings => {
 
 module.exports = {
   get,
-  apply
+  apply,
 };

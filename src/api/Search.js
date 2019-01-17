@@ -92,43 +92,51 @@ const parsePageCount = $ => {
   };
 };
 
-const parseGalleries = $ => $('.itdc').map((i, el) => {
-  const type = $(el).find('img').attr('alt');
-  const timeNode = $(el).next();
-  const postTime = timeNode.text();
+const parseGalleries = $ =>
+  $('.itdc')
+    .map((i, el) => {
+      const type = $(el)
+        .find('img')
+        .attr('alt');
+      const timeNode = $(el).next();
+      const postTime = timeNode.text();
 
-  const detialNode = timeNode.next();
-  const coverNode = detialNode.find('.it2').find('img');
-  let title = '';
-  let cover = '';
+      const detialNode = timeNode.next();
+      const coverNode = detialNode.find('.it2').find('img');
+      let title = '';
+      let cover = '';
 
-  if (coverNode.length) {
-    title = coverNode.attr('alt');
-    cover = coverNode.attr('src');
-  } else {
-    const parsedDetial = detialNode.find('.it2').text().split('~');
+      if (coverNode.length) {
+        title = coverNode.attr('alt');
+        cover = coverNode.attr('src');
+      } else {
+        const parsedDetial = detialNode
+          .find('.it2')
+          .text()
+          .split('~');
 
-    title = parsedDetial[3];
-    cover = BASE_URL + parsedDetial[2];
-  }
+        title = parsedDetial[3];
+        cover = BASE_URL + parsedDetial[2];
+      }
 
-  const torrentsPage = detialNode.find('.i a').attr('href');
-  const galleryPage = detialNode.find('.it5 a').attr('href');
-  const uploaderNode = detialNode.next();
-  const uploader = uploaderNode.text();
-  const uploaderPage = uploaderNode.find('a').attr('href');
+      const torrentsPage = detialNode.find('.i a').attr('href');
+      const galleryPage = detialNode.find('.it5 a').attr('href');
+      const uploaderNode = detialNode.next();
+      const uploader = uploaderNode.text();
+      const uploaderPage = uploaderNode.find('a').attr('href');
 
-  return {
-    type,
-    postTime,
-    title,
-    cover,
-    torrentsPage,
-    galleryPage,
-    uploader,
-    uploaderPage
-  };
-}).get();
+      return {
+        type,
+        postTime,
+        title,
+        cover,
+        torrentsPage,
+        galleryPage,
+        uploader,
+        uploaderPage,
+      };
+    })
+    .get();
 
 module.exports = {
   search,

@@ -28,12 +28,12 @@ const login = async (username, password) => {
 
     return http.get('favorites.php').then(() => {
       return {
-        cookie: http.defaults.headers.common['Cookie']
+        cookie: http.defaults.headers.common['Cookie'],
       };
     });
   } catch (e) {
     return Promise.reject(e);
-  };
+  }
 };
 
 const parseLoginResultPage = html => {
@@ -45,7 +45,7 @@ const parseLoginResultPage = html => {
     errorMessage = errorNode.text();
   }
 
-  return errorMessage
+  return errorMessage;
 };
 
 const setCookie = cookie => {

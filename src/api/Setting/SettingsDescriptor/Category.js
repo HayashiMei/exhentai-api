@@ -2,53 +2,53 @@ const Category = {
   ctDoujinshi: {
     name: 'ct_doujinshi',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctManga: {
     name: 'ct_manga',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctArtistCG: {
     name: 'ct_artistcg',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctGameCG: {
     name: 'ct_gamecg',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctWestren: {
     name: 'ct_western',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctNonH: {
     name: 'ct_non-h',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctImageSet: {
     name: 'ct_imageset',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctCosplay: {
     name: 'ct_cosplay',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctAsianPorn: {
     name: 'ct_asianporn',
     type: 'checkbox',
-    checked: false
+    checked: false,
   },
   ctMisc: {
     name: 'ct_misc',
     type: 'checkbox',
-    checked: false
-  }
+    checked: false,
+  },
 };
 
 module.exports = Category;
