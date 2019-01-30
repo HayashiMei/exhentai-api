@@ -2,17 +2,13 @@
   "name": "exhentai-api",
   "version": "0.0.1",
   "description": "A simple API library for exhentai",
+  "author": "HayashiMei <hayashi@kato-megumi.com> (https://blog.romachuu.com)",
   "engines": {
     "node": ">=8.0.0"
   },
   "main": "./src/index.js",
   "scripts": {
     "start": "node src/index.js"
-  },
-  "author": {
-    "name": "HayashiMei",
-    "email": "hayashi@kato-megumi.com",
-    "url": "https://github.com/HayashiMei"
   },
   "license": "MIT",
   "dependencies": {
